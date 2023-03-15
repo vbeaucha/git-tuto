@@ -27,7 +27,7 @@ $ git config --global push.default simple
 ```
 ### ajouter un prompt pour vos repos git
 
-Récupérer ce [script](https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh) est installé le dans votre répértoire local puis ajouter ses lignes a votre ficher *~/.bachrc*
+Récupérez ce [script](https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh) est installé le dans votre répértoire local puis ajouter ses lignes a votre ficher *~/.bachrc*
 
 ```sh
 . ~/.git-prompt.sh
@@ -106,9 +106,71 @@ Lorsque vous utilisez git, l'on parle souvent de branche de travail, on utilise 
 2. l'index (ou le stage) : Espace de validation de notre travail
 3. Le dépot : Espace ou ce trouve le travail valider
 
-Actuellement votre repertoire git doit se trouver dans cette état:
+Actuellement votre repertoire git doit se trouver dans cet état:
 
 ![alt text](./images/repo1.png)
+
+
+Faissons quelques modifications dans notre fichier readme.md 
+
+Ajouter les lignes que vous souhaitez dedans et sauvegardez le, vous pouvez observer le retour de la commande:
+
+```bash
+$ git status
+Sur la branche master
+Modifications qui ne seront pas validées :
+  (utilisez "git add <fichier>..." pour mettre à jour ce qui sera validé)
+  (utilisez "git restore <fichier>..." pour annuler les modifications dans le répertoire de travail)
+	modifié :         readme.md
+
+aucune modification n'a été ajoutée à la validation (utilisez "git add" ou "git commit -a")
+```
+
+Votre repertoire se trouve donc dans cet état:
+
+![alt text](./images/repo2.png)
+
+Ajoutez grâce à la commande *git add* le fichier readme.md dans l'index et faite une nouvelle modification de celui-ci
+
+votre repertoire se trouvera ainsi dans cet état:
+
+![alt text](./images/repo3.png)
+
+
+Pour finir utilisez la commande *git add* pour ajoutez le readme.md et faite un commit pour valider les modifications
+
+```bash
+$ git add readme.md
+$ git commit -m "Ajout de lignes dans le fichier readme.md"
+```
+
+Votre repertoire git sera ainsi dans cette état:
+
+![alt text](./images/repo4.png)
+
+*Remarque*
+Vous pouvez voir que le fichier readme.md a été validé directement en version 3 sans que la v2 n'ai été dans le dépot
+
+Vous pouvez voir que vous n'avez que 2 commits dans votre historique:
+
+```bash
+$ git log
+commit 6b6a4c8dad91934dfdc1d01fc2efd13a769009ee (HEAD -> master)
+Author: valentin beauchamp <valentin@weaverize.com>
+Date:   Wed Mar 15 13:34:09 2023 +0100
+
+    Ajout de lignes dans le fichier readme.md
+
+commit 878cffad18ea9d1b4f2a0ff24a1dd61f258a0af3
+Author: valentin beauchamp <valentin@weaverize.com>
+Date:   Wed Mar 15 11:24:04 2023 +0100
+
+    Mon premier commit
+```
+
+
+
+
 
 
 
