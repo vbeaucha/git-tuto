@@ -1,117 +1,144 @@
-# Les Bases de Git
+# Git Tutorial
 
-## Configurer son git
+A comprehensive guide to mastering Git, from basic concepts to advanced techniques.
 
-### Initialiser un repo git
+## 📚 Table of Contents
 
-Pour initialiser un repo git local, rien de plus simple:
-```bash
-$ git init gitrepo
-$ cd gitrepo
-```
+### Getting Started
+1. [**Configuring Git**](docs/01-configuring-git.md)
+   - Initialize a repository
+   - Set up your identity
+   - Customize your environment
+   - Add a Git prompt
 
-### Identifier ses commits
+2. [**My Very First Commit**](docs/02-first-commit.md)
+   - Create your first commit
+   - Understand git status
+   - Learn the basic workflow
 
-Lorsque vous faites un commit sur git, il faut que l'on sache qui vous etes!
-Vous pouvez vous identifer comme cela:
-```bash
-$ git config --global user.name "votre nom"
-$ git config --global user.email email@email.com
-```
-### Personnalisé son git
+### Core Concepts
+3. [**Understanding Git's Tree Structure**](docs/03-git-tree-structure.md)
+   - The three trees: Working Directory, Index, Repository
+   - Visualizing Git history
+   - Using .gitignore
 
-Git permet un grand choix de personalisation, pour commencer, je vous invite a modifier votre éditeur ainsi que definir une stategie de push qui nous sera utile pour eviter certain warning plutard
-```bash
-$  config --global core.editor vim
-$ git config --global push.default simple
-```
-### ajouter un prompt pour vos repos git
+4. [**Branches and the HEAD Position**](docs/04-branches-and-head.md)
+   - Understanding HEAD
+   - Creating and switching branches
+   - Merging branches (with and without conflicts)
+   - Resolving merge conflicts
 
-Récupérer ce [script](https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh) est installé le dans votre répértoire local puis ajouter ses lignes a votre ficher *~/.bachrc*
+### History Management
+5. [**Going Back: Reset and Revert**](docs/05-reset-and-revert.md)
+   - Deleting commits with git reset
+   - Understanding --soft, --mixed, and --hard
+   - Undoing commits with git revert
+   - When to use each command
 
-```sh
-. ~/.git-prompt.sh
-export GIT_PS1_SHOWDIRTYSTATE=1
-export PS1='\[\e[1;32m\u@\h\]\e[m:\]\e[1;34m\w$(__git_ps1 " (%s)")\]\e[m\$\] \]'
-```
+### Collaboration
+6. [**Sharing Your Repository**](docs/06-sharing-repositories.md)
+   - Sharing by simple copy
+   - Creating bare repositories
+   - Sharing via SSH
+   - Working with remote repositories
+   - Fetching, pulling, and pushing changes
 
-Recharger son bashrc: 
-```bash
-source ~/.bashrc
-```
+7. [**Remote Branches**](docs/11-remote-branches.md)
+   - Understanding remote branches
+   - Tracking remote branches
+   - Updating remote references
+   - Deleting remote branches
 
-## Mon tout premier commit
+### Advanced Techniques
+8. [**Rebase: An Alternative to Merge**](docs/07-rebase.md)
+   - What is rebase?
+   - Difference between merge and rebase
+   - Resolving conflicts during rebase
+   - Interactive rebase
+   - When to use rebase vs merge
 
-Pour votre premier commit nous allons créer un fichier readme.md
-```bash
-$ touch readme.md
-```
+9. [**Atomic Commits**](docs/08-atomic-commits.md)
+   - Breaking down your commits
+   - Interactive add with git add -p
+   - Interactive unstaging and cancellation
 
-vous pouvez regarder l'état de votre repo grâce à la commande
-```bash
-$ git status
+10. [**Stashing**](docs/09-stashing.md)
+    - What is stashing?
+    - Basic stash usage
+    - Managing stashes
+    - Advanced stash options
+    - Common use cases
 
-Sur la branche master
+11. [**Tags**](docs/10-tags.md)
+    - What are tags?
+    - Creating and listing tags
+    - Pushing and deleting tags
+    - Checking out tags
 
-Aucun commit
+### Safety and Recovery
+12. [**The Reflog: Git's Safety Net**](docs/12-reflog.md)
+    - What is the reflog?
+    - Viewing the reflog
+    - Recovering lost commits
+    - Reflog limitations
 
-Fichiers non suivis:
-  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
-	readme.md
+### Workflows and Best Practices
+13. [**Git Workflows**](docs/13-workflows.md)
+    - Centralized workflow
+    - Feature branch workflow
+    - Gitflow workflow
+    - Forking workflow
 
-aucune modification ajoutée à la validation mais des fichiers non suivis sont présents (utilisez "git add" pour les suivre)
-```
-Sur le retour de la commande *git status* on voit bien qu'il n'y a aucun commit, et qu'il existe un nouveau fichier dans le dossier qui s'appel readme.md
+14. [**Advanced Commands**](docs/14-advanced-commands.md)
+    - git cherry-pick
+    - git bisect
+    - git blame
+    - git diff
+    - git clean
+    - git archive
+    - Useful Git aliases
 
+15. [**Best Practices**](docs/15-best-practices.md)
+    - Writing good commit messages
+    - Atomic commits
+    - Commit frequency
+    - Pre-push checklist
+    - Never rewrite shared history
+    - Using .gitignore effectively
 
-Ajout le fichier readme.md et regarder l'état de la commande *git status*
+16. [**Conclusion**](docs/16-conclusion.md)
+    - Key concepts recap
+    - Useful resources
 
-```bash
-$ git add readme.md
-$ git status
-Sur la branche master
+## 🚀 Quick Start
 
-Aucun commit
+If you're new to Git, start with:
+1. [Configuring Git](docs/01-configuring-git.md)
+2. [My Very First Commit](docs/02-first-commit.md)
+3. [Understanding Git's Tree Structure](docs/03-git-tree-structure.md)
 
-Modifications qui seront validées :
-  (utilisez "git rm --cached <fichier>..." pour désindexer)
-	nouveau fichier : readme.md
-```
+## 📖 How to Use This Tutorial
 
-On a bien ajouter le fichier au repo git! Il ne manque plus qu'à créer notre premier commit
+- **Beginners**: Follow the sections in order from 1 to 16
+- **Intermediate users**: Jump to specific topics you want to learn
+- **Reference**: Use the table of contents to quickly find commands
 
-```bash
-$ git commit -> ouvre vim pour editer son commit message
-$ git commit -m "Mon premier commit" -> écrire directement un commit message
-```
-Vérifiez grace à la commande *git status* que plus rien n'est à valider
+## 💡 Tips
 
+- Practice each concept in a test repository before using it in real projects
+- Don't be afraid to experiment - the reflog can save you!
+- Commit often, push when ready
+- Read the error messages - Git usually tells you what to do
 
-Vous pouvez voir votre 1er commit grace à la commande : 
+## 🤝 Contributing
 
-```bash
-$ git log
-commit 878cffad18ea9d1b4f2a0ff24a1dd61f258a0af3 (HEAD -> master)
-Author: valentin beauchamp <valentin@weaverize.com>
-Date:   Wed Mar 15 11:24:04 2023 +0100
+Found an error or want to improve this tutorial? Contributions are welcome!
 
-    Mon premier commit
-```
+## 📝 License
 
-## Comprendre l'arborescence de Git
+This tutorial is provided as-is for educational purposes.
 
-Lorsque vous utilisez git, l'on parle souvent de branche de travail, on utilise ce terme car git est composé de 3 espaces, que l'on nomme arbre!
+---
 
-1. Le répertoire de travail : c'est ici que l'on fait nos modification
-2. l'index (ou le stage) : Espace de validation de notre travail
-3. Le dépot : Espace ou ce trouve le travail valider
-
-Actuellement votre repertoire git doit se trouver dans cette état:
-
-![alt text](./images/repo1.png)
-
-
-
-
-
+**Happy Git-ing!** 🎉
 
