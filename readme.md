@@ -227,6 +227,259 @@ rien à valider, la copie de travail est propre
 ```
 Les fichiers qui portent l'extension .nop sont bien ignorés par git
 
+## Les branches et la position de la tête de lecture
+
+### HEAD
+
+Je pense que vous avez remarqué le **(HEAD -> master)** dans vos retours de commande de log, cette indication vous donne la position de la tête de lecture de git (HEAD)
+
+```bash
+git lg
+* 250fe34 (HEAD -> master) Ajout du gitignore
+* 6b6a4c8 Ajout de lignes dans le fichier readme.md
+* 878cffa Mon premier commit
+```
+
+Cette tête de lecture peut être déplacé grâce à la commande *git checkout <position>*
+
+Il existe plusieurs manière de manipuler la tête de lecture:
+
+1. git checkout 6b6a4c8 : la référence HEAD se déplace sur le commit 6b6a4c8
+2. git checkout HEAD^ : la référence HEAD se déplace d'un cran vers le gauche (HEAD^ désigne le commit précédant HEAD)
+3. git checkout master : la référence HEAD se déplace vers la référence master, c'est-à-dire la tête de l'historique
+
+
+![alt text](./images/commit.png)
+
+**Remarque**
+
+Noté que la réference HEAD^ désigne le commit prédédant HEAD, ainsi HEAD^^ désigne le commit précédant HEAD^, etc...
+
+### Branche de travail
+
+Lorsque l'on travail sur un projet, on ne souhaite pas que son travail en cours influence ce qui a été validé.
+
+Pour palier à cela, git utilise un système de branche qui permet de créer des nouvelles reférence à une succession de commit.
+
+La bonne pratique de travail est donc de créer une nouvelle branche de travail pour chaque amélioration et de rappatrier son travail une fois validé
+
+Créons une nouvelle branche de travail puis déplaçons nous sur sa référence
+```bash
+$ git branch develop
+$ git checkout develop
+```
+
+**Note**
+Vous pouvez créer et vous déplacer sur une nouvelle branche directement grâce à 
+```bash
+$ git checkout -b develop
+```
+
+Si l'on observe les logs, on remaque que la référence HEAD pointe maintenant sur la branche *develop*
+
+```bash
+$ git lg
+* 250fe34 (HEAD -> develop, master) Ajout du gitignore
+* 6b6a4c8 Ajout de lignes dans le fichier readme.md
+* 878cffa Mon premier commit
+```
+
+Ajoutons [ce fichier](./files/script.js) dans notre répertoire( pas de panique si vous ne connaisez pas le javascript, on restera sur du code simple!)
+
+```bash
+$ git add script.j
+$ git commit -m "ajout du fichier script.js"
+$ git lg
+* d1d19e0 (HEAD -> develop) ajout du fichier script.js
+* 250fe34 (master) Ajout du gitignore
+* 6b6a4c8 Ajout de lignes dans le fichier readme.md
+* 878cffa Mon premier commit
+```
+
+Vous voyez donc que notre modification à créer un nouveau commit et détaché la branche master et develop, mais comment les lier de nouveau?
+
+#### La fusion de branche sans conflits
+
+Actuellement votre arborescence ressemble à cela:
+
+![alt text](./images/commit2.png)
+
+Git permet de fusionner ses branches de travail lorsque l'on a fini de travailler sur l'un d'elle
+Pour cela deplacer vous sur la branche master et merger la branche develop dessus
+
+```bash
+$ git checkout master
+$ git merge develop
+$ git lg
+* d1d19e0 (HEAD -> master, develop) ajout du fichier script.js
+* 250fe34 Ajout du gitignore
+* 6b6a4c8 Ajout de lignes dans le fichier readme.md
+* 878cffa Mon premier commit
+```
+
+#### La fusion de branche avec des conflits
+
+Modifez la ligne 6 de *script.js* et commiter votre changement sur votre branche master
+
+```bash
+$ vim script.js
+# console.log("résultat: "+ mutliplier(8,6)); 
+$ git add scrip.js
+$ git commit -m "changement de nombre à mutliplier"
+$ git lg
+* 0f24fb4 (HEAD -> master) changement de nombre à mutliplier
+* d1d19e0 (develop) ajout du fichier script.js
+* 250fe34 Ajout du gitignore
+* 6b6a4c8 Ajout de lignes dans le fichier readme.md
+* 878cffa Mon premier commit
+```
+
+Allez sur votre branche develop et faite de même avec d'autres chiffres
+
+```bash
+$ git checkout develop
+$ vim script.js
+# console.log("résultat: "+ mutliplier(7,4)); 
+$ git add scrip.js
+$ git commit -m "changement de nombre à mutliplier par 7 et 4"
+$ git lg
+* 04efda0 (HEAD -> develop) changement de nombre à mutliplier par 7 et 4
+* d1d19e0 ajout du fichier script.js
+* 250fe34 Ajout du gitignore
+* 6b6a4c8 Ajout de lignes dans le fichier readme.md
+* 878cffa Mon premier commit
+```
+
+Si vous souhaitez voir toutes vos branches de travail, vous pouvez utiliser l'option *--all* de la commande *git log*
+```bash
+$ git lg --all
+* 04efda0 (HEAD -> develop) changement de nombre à mutliplier par 7 et 4
+| * 0f24fb4 (master) changement de nombre à mutliplier
+|/  
+* d1d19e0 ajout du fichier script.js
+* 250fe34 Ajout du gitignore
+* 6b6a4c8 Ajout de lignes dans le fichier readme.md
+* 878cffa Mon premier commit
+```
+**Remarque**
+
+Je ne vous conseil pas d'ajouter cette option a votre alias *git lg*, on a souvent besoin d'un visuel claire de ses logs
+
+
+Votre arborescence ressemble donc à cela:
+
+![alt text](./images/commit3.png)
+
+
+Que ce passe s'il si l'on souhaite merger develop dans master maintenant
+
+```bash
+$ git checkout master
+$ git merge develop
+Fusion automatique de script.js
+CONFLIT (contenu) : Conflit de fusion dans script.js
+Pré-image enregistrée pour 'script.js'
+La fusion automatique a échoué ; réglez les conflits et validez le résultat.
+```
+
+Git nous indique qu'il y a un conflit, c'est à nous de le résoudre!
+
+Ouvrez le fichier *script.js*, il devrait ressembler à cela:
+
+```js
+function mutliplier(a,b){
+        console.log("on va multipler "+a+" et "+b)
+        return a*b
+}
+
+<<<<<<< HEAD
+console.log("résultat: "+ mutliplier(8,6));
+=======
+console.log("résultat: "+ mutliplier(7,4));
+>>>>>>> develop
+```
+
+Git vous indique dans le fichier les lignes qui rentre en conflit et vous indique les différences entre le HEAD et la branche mergé
+
+
+Gardons la ligne qui se trouve dans la branche develop
+```js
+function mutliplier(a,b){
+        console.log("on va multipler "+a+" et "+b)
+        return a*b
+}
+
+console.log("résultat: "+ mutliplier(7,4));
+```
+
+Sauvegardez votre fichier et ajoutez le à l'index
+
+```bash
+$ git add script.js
+$ git status
+Sur la branche master
+Tous les conflits sont réglés mais la fusion n'est pas terminée.
+  (utilisez "git commit" pour terminer la fusion)
+
+Modifications qui seront validées :
+	modifié :         script.js
+
+```
+
+La commande status nous indique bien que le fichier est ajouté à l'index, utilisez la commande *git merge --continu* pour indiquer a git que continuer le merge, votre éditeur s'ouvre et vous propose un commit message, validé, le merge est terminé!
+
+```bash
+$ git merge --continu
+#Merge branch 'develop'
+#
+## Veuillez saisir le message de validation pour vos modifications. Les lignes
+## commençant par '#' seront ignorées, et un message vide abandonne la validation.
+##
+## Date :       Wed Mar 15 16:57:18 2023 +0100
+##
+## Sur la branche master
+## Modifications qui seront validées :
+##       modifié :         script.js
+$ git lg
+*   fd5a68a (HEAD -> master) Merge branch 'develop'
+|\  
+| * 04efda0 (develop) changement de nombre à mutliplier par 7 et 4
+* | 0f24fb4 changement de nombre à mutliplier
+|/  
+* d1d19e0 ajout du fichier script.js
+* 250fe34 Ajout du gitignore
+* 6b6a4c8 Ajout de lignes dans le fichier readme.md
+* 878cffa Mon premier commit
+```
+
+**Remarque**
+Notez qu'à la différence de la fusion sans conflit, git a du créer un merge commit pour comprendre la statégie de résolution des conflits
+
+Votre aborescence ressemble ainsi à cela:
+
+![alt text](./images/commit4.png)
+
+## Revenir en arrière et garder un historique lineaire
+
+### Supprimer un commit
+
+Il existe une commande permettant de revenir en arrière et supprimer un commit 
+
+```bash
+$ git reset HEAD^
+```
+
+Il existe 3 options de reset dans git:
+1. --soft : Le commit est supprimer mais les modifications sont stocké dans l'index en attente de validation
+2. --mixed : mode par defaut, les modifications sont stocké dans le répertoire de travail
+3. --hard : Les modifications sont supprimé ( à utilisé avec parcimonie )
+
+
+
+
+
+
+
 
 
 
