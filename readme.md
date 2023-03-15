@@ -148,7 +148,7 @@ Votre repertoire git sera ainsi dans cette état:
 
 ![alt text](./images/repo4.png)
 
-*Remarque*
+**Remarque**
 Vous pouvez voir que le fichier readme.md a été validé directement en version 3 sans que la v2 n'ai été dans le dépot
 
 Vous pouvez voir que vous n'avez que 2 commits dans votre historique:
@@ -167,6 +167,69 @@ Date:   Wed Mar 15 11:24:04 2023 +0100
 
     Mon premier commit
 ```
+
+### Visualiser l'historique de git
+
+La commande *git log* peut ne pas être très amical au premier abore, vous pouvez utiliser des options pour avoir des informations plus consise
+```bash
+$ git log --oneline --graph --decorate
+* 6b6a4c8 (HEAD -> master) Ajout de lignes dans le fichier readme.md
+* 878cffa Mon premier commit
+```
+
+Je vous conseil de créer un alias pour la suite : 
+```bash
+$ git config --global alias.lg "log --oneline --graph --decorate"
+```
+
+A l'inverse, si vous souhaitez plus d'information sur un commit, vous pouvez utiliser la commande *git show [commit]* pour voir tout les infos dessus
+
+**Attention** vos numero de commit seront différent des miens!!
+```bash
+$ git show 6b6a4c8
+commit 6b6a4c8dad91934dfdc1d01fc2efd13a769009ee (HEAD -> master)
+Author: valentin beauchamp <valentin@weaverize.com>
+Date:   Wed Mar 15 13:34:09 2023 +0100
+
+    Ajout de lignes dans le fichier readme.md
+
+diff --git a/readme.md b/readme.md
+index e69de29..fe73258 100644
+--- a/readme.md
++++ b/readme.md
+@@ -0,0 +1,4 @@
++# Readme de mon super projet
++
++Je suis la 1er ligne du readme
++Je suis la 2eme lignes du readme
+```
+
+### Ignorer des fichiers dans l'arborescence
+
+Parfois l'on souhaite que certain fichier du repertoire soit invisible pour git, par exemple de variable d'environement, du cache, des fichiers compilé.
+
+Git offre la possibilité d'ignorer des fichiers grâce au *.gitignore*
+
+créez un fichier .gitignore, ajoutez une ligne \*.nop dedans et commitez vos changement
+```bash
+$ vim .gitignore
+# *.nop
+$ git add .gitignore
+$ git commit -m "Ajout du gitignore"
+```
+
+Une fois fait créez un fichier *fichier.nop* et observez le retour de la commande *git status*
+```bash
+$ touch fichier.nop
+$ git status
+Sur la branche master
+rien à valider, la copie de travail est propre
+```
+Les fichiers qui portent l'extension .nop sont bien ignorés par git
+
+
+
+
 
 
 
