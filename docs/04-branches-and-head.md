@@ -59,7 +59,17 @@ $ git lg
 * 878cffa My first commit
 ```
 
-Let's add [this file](../files/script.js) to our repository (don't panic if you don't know javascript, we'll stick to simple code!):
+
+Create a file script.js on our repository, and add thoses lines (don't panic if you don't know javascript, we'll stick to simple code!):
+
+```js
+function multiply(a,b){
+	console.log("we're going to multiply "+a+" and "+b)
+	return a*b
+}
+
+console.log("result: "+ multiply(5,2));
+```
 
 ```bash
 $ git add script.js
